@@ -1,13 +1,17 @@
 OUT_DIR:=out
+SRC_DIR:=src
 ISO_DIR:=$(OUT_DIR)/iso
 OBJ:=$(OUT_DIR)/obj
 BIN:=$(OUT_DIR)/bin
 OS_OUT:=$(OUT_DIR)/dist
 CC:=i686-elf-gcc
 ASM:=nasm
+CFLAGS:=-std=gnu99 -ffreestanding -O0 -Wall -Wextra
+
+OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o
 
 .PHONY=all
-all: dirs kernel link create-grub
+all: dirs henryos.bin create-grub
 	@echo "Done!"
 
 dirs:
@@ -24,18 +28,16 @@ dirs:
 		mkdir -p $(ISO_DIR); \
 	fi
 
-boot: dirs boot.asm
-	@echo "<<< Compiling boot program >>>"
-	$(ASM) -felf32 boot.asm -o $(OBJ)/boot.o
+$(OBJ)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel: dirs kernel.c
-	@echo "<<< Compiling kernel >>>"
-	$(CC) -c kernel.c -o $(OBJ)/kernel.o -std=gnu99 -ffreestanding -O0 -Wall -Wextra -g
+$(OBJ)/%.o: $(SRC_DIR)/%.asm
+	$(ASM) -felf32 $< -o $@
 
-link: dirs boot kernel
-	$(CC) -T linker.ld -o $(BIN)/henryos.bin -ffreestanding -O0 -nostdlib $(OBJ)/boot.o $(OBJ)/kernel.o -lgcc
+henryos.bin: $(OBJS)
+	$(CC) -T linker.ld -o $(BIN)/$@ -ffreestanding -O0 -nostdlib -lgcc $(OBJS)
 
-create-grub: link
+create-grub: henryos.bin
 	@if grub-file --is-x86-multiboot $(BIN)/henryos.bin; then \
 		echo "<Passed> henryos.bin is an x86 multiboot binary.";\
 	else \
