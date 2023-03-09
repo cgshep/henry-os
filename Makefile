@@ -28,9 +28,9 @@ boot: dirs boot.asm
 	@echo "<<< Compiling boot program >>>"
 	$(ASM) -felf32 boot.asm -o $(OBJ)/boot.o
 
-kernel: dirs kernel.asm
+kernel: dirs kernel.c
 	@echo "<<< Compiling kernel >>>"
-	$(ASM) -felf32 kernel.asm -o $(OBJ)/kernel.o
+	$(CC) -c kernel.c -o $(OBJ)/kernel.o -std=gnu99 -ffreestanding -O0 -Wall -Wextra -g
 
 link: dirs boot kernel
 	$(CC) -T linker.ld -o $(BIN)/henryos.bin -ffreestanding -O0 -nostdlib $(OBJ)/boot.o $(OBJ)/kernel.o -lgcc

@@ -1,153 +1,114 @@
-BITS 32
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
  
-VGA_WIDTH equ 80
-VGA_HEIGHT equ 25
+/* Check if the compiler thinks you are targeting the wrong operating system. */
+#if defined(__linux__)
+#error "You are not using a cross-compiler, you will most certainly run into trouble"
+#endif
  
-VGA_COLOR_BLACK equ 0
-VGA_COLOR_BLUE equ 1
-VGA_COLOR_GREEN equ 2
-VGA_COLOR_CYAN equ 3
-VGA_COLOR_RED equ 4
-VGA_COLOR_MAGENTA equ 5
-VGA_COLOR_BROWN equ 6
-VGA_COLOR_LIGHT_GREY equ 7
-VGA_COLOR_DARK_GREY equ 8
-VGA_COLOR_LIGHT_BLUE equ 9
-VGA_COLOR_LIGHT_GREEN equ 10
-VGA_COLOR_LIGHT_CYAN equ 11
-VGA_COLOR_LIGHT_RED equ 12
-VGA_COLOR_LIGHT_MAGENTA equ 13
-VGA_COLOR_LIGHT_BROWN equ 14
-VGA_COLOR_WHITE equ 15
+/* This tutorial will only work for the 32-bit ix86 targets. */
+#if !defined(__i386__)
+#error "This tutorial needs to be compiled with a ix86-elf compiler"
+#endif
  
-global kernel_main
-kernel_main:
-    mov dh, VGA_COLOR_LIGHT_GREY
-    mov dl, VGA_COLOR_BLACK
-    call terminal_set_color
-    mov esi, hello_string
-    call terminal_write_string
-    jmp $
+/* Hardware text mode color constants. */
+enum vga_color {
+	VGA_COLOR_BLACK = 0,
+	VGA_COLOR_BLUE = 1,
+	VGA_COLOR_GREEN = 2,
+	VGA_COLOR_CYAN = 3,
+	VGA_COLOR_RED = 4,
+	VGA_COLOR_MAGENTA = 5,
+	VGA_COLOR_BROWN = 6,
+	VGA_COLOR_LIGHT_GREY = 7,
+	VGA_COLOR_DARK_GREY = 8,
+	VGA_COLOR_LIGHT_BLUE = 9,
+	VGA_COLOR_LIGHT_GREEN = 10,
+	VGA_COLOR_LIGHT_CYAN = 11,
+	VGA_COLOR_LIGHT_RED = 12,
+	VGA_COLOR_LIGHT_MAGENTA = 13,
+	VGA_COLOR_LIGHT_BROWN = 14,
+	VGA_COLOR_WHITE = 15,
+};
  
+static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
+{
+	return fg | bg << 4;
+}
  
-; IN = dl: y, dh: x
-; OUT = dx: Index with offset 0xB8000 at VGA buffer
-; Other registers preserved
-terminal_getidx:
-    push ax; preserve registers
+static inline uint16_t vga_entry(unsigned char uc, uint8_t color) 
+{
+	return (uint16_t) uc | (uint16_t) color << 8;
+}
  
-    shl dh, 1 ; multiply by two because every entry is a word that takes up 2 bytes
+size_t strlen(const char* str) 
+{
+	size_t len = 0;
+	while (str[len])
+		len++;
+	return len;
+}
  
-    mov al, VGA_WIDTH
-    mul dl
-    mov dl, al
+static const size_t VGA_WIDTH = 80;
+static const size_t VGA_HEIGHT = 25;
  
-    shl dl, 1 ; same
-    add dl, dh
-    mov dh, 0
+size_t terminal_row;
+size_t terminal_column;
+uint8_t terminal_color;
+uint16_t* terminal_buffer;
  
-    pop ax
-    ret
+void terminal_initialize(void) 
+{
+	terminal_row = 0;
+	terminal_column = 0;
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	terminal_buffer = (uint16_t*) 0xB8000;
+	for (size_t y = 0; y < VGA_HEIGHT; y++) {
+		for (size_t x = 0; x < VGA_WIDTH; x++) {
+			const size_t index = y * VGA_WIDTH + x;
+			terminal_buffer[index] = vga_entry(' ', terminal_color);
+		}
+	}
+}
  
-; IN = dl: bg color, dh: fg color
-; OUT = none
-terminal_set_color:
-    shl dl, 4
-    or dl, dh
-    mov [terminal_color], dl
-    ret
+void terminal_setcolor(uint8_t color) 
+{
+	terminal_color = color;
+}
  
-; IN = dl: y, dh: x, al: ASCII char
-; OUT = none
-terminal_putentryat:
-    pusha
-    call terminal_getidx
-    mov ebx, edx
-    mov dl, [terminal_color]
-    mov byte [0xB8000 + ebx], al
-    mov byte [0xB8001 + ebx], dl
-    popa
-    ret
+void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) 
+{
+	const size_t index = y * VGA_WIDTH + x;
+	terminal_buffer[index] = vga_entry(c, color);
+}
  
-; IN = al: ASCII char
-terminal_putchar:
-    mov dx, [terminal_cursor_pos] ; This loads terminal_column at DH, and terminal_row at DL
-    call terminal_putentryat
-    inc dh
-    cmp dh, VGA_WIDTH
-    jne .cursor_moved
-    mov dh, 0
-    inc dl
-    cmp dl, VGA_HEIGHT
-    jne .cursor_moved
-    mov dl, 0
+void terminal_putchar(char c) 
+{
+	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	if (++terminal_column == VGA_WIDTH) {
+		terminal_column = 0;
+		if (++terminal_row == VGA_HEIGHT)
+			terminal_row = 0;
+	}
+}
  
+void terminal_write(const char* data, size_t size) 
+{
+	for (size_t i = 0; i < size; i++)
+		terminal_putchar(data[i]);
+}
  
-.cursor_moved:
-    ; Store new cursor position 
-    mov [terminal_cursor_pos], dx
-    ret
+void terminal_writestring(const char* data) 
+{
+	terminal_write(data, strlen(data));
+}
  
-; IN = cx: length of string, ESI: string location
-; OUT = none
-terminal_write:
-    pusha
-.loopy:
+void kernel_main(void) 
+{
+	/* Initialize terminal interface */
+	terminal_initialize();
  
-    mov al, [esi]
-    call terminal_putchar
- 
-    dec cx
-    cmp cx, 0
-    je .done
- 
-    inc esi
-    jmp .loopy
- 
- 
-.done:
-    popa
-    ret
- 
-; IN = ESI: zero delimited string location
-; OUT = ECX: length of string
-terminal_strlen:
-    push eax
-    push esi
-    mov ecx, 0
-.loopy:
-    mov al, [esi]
-    cmp al, 0
-    je .done
- 
-    inc esi
-    inc ecx
- 
-    jmp .loopy
- 
- 
-.done:
-    pop esi
-    pop eax
-    ret
- 
-; IN = ESI: string location
-; OUT = none
-terminal_write_string:
-    pusha
-    call terminal_strlen
-    call terminal_write
-    popa
-    ret
- 
-; Exercises:
-; - Newline support
-; - Terminal scrolling when screen is full
-; Note: 
-; - The string is looped through twice on printing. 
- 
-hello_string db "Hello, world!", 0 ; 0xA = line feed
-terminal_color db 0
-terminal_cursor_pos:
-terminal_column db 0
-terminal_row db 0
+	/* Newline support is left as an exercise. */
+	terminal_writestring("Hello, kernel World!\n");
+}
