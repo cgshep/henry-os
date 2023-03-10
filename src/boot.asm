@@ -57,7 +57,6 @@ _start:
 	; To set up a stack, we set the esp register to point to the top of our
 	; stack (as it grows downwards on x86 systems). This is necessarily done
 	; in assembly as languages such as C cannot function without a stack.
-	mov ebp, stack_bottom
 	mov esp, stack_top
  
 	; This is a good place to initialize crucial processor state before the
@@ -76,7 +75,6 @@ setup_gdt_asm:
 	mov cr0, eax
 	jmp CODE_SEG:start_protected_mode
 
-	[bits 32]
 start_protected_mode: 
 	; Enter the high-level kernel. The ABI requires the stack is 16-byte
 	; aligned at the time of the call instruction (which afterwards pushes
@@ -91,7 +89,7 @@ start_protected_mode:
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-	    
+
 	extern kernel_main
 	call kernel_main
  
@@ -111,9 +109,10 @@ start_protected_mode:
 _start.end:
 
 gdt_start:
-	dq 0x00
+	dd 0x0
+	dd 0x0
 ; GDT for code segment. base = 0x00000000, length = 0xfffff
-; for flags, refer to os-dev.pdf document, page 36
+				; for flags, refer to os-dev.pdf document, page 36
 gdt_code: 
 	dw 0xffff    ; segment length, bits 0-15
 	dw 0x0       ; segment base, bits 0-15
@@ -138,5 +137,5 @@ gdt_descriptor:
 	dw gdt_end - gdt_start - 1 ; size (16 bit), always one less of its true size
 	dd gdt_start ; address (32 bit)
 
-CODE_SEG equ gdt_code - gdt_start
-DATA_SEG equ gdt_data - gdt_start
+CODE_SEG equ gdt_code - gdt_start ; 0x8
+DATA_SEG equ gdt_data - gdt_start ; 0x10

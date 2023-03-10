@@ -8,7 +8,7 @@ CC:=i686-elf-gcc
 ASM:=nasm
 CFLAGS:=-std=gnu99 -ffreestanding -O0 -Wall -Wextra
 
-OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o
+OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o $(OBJ)/string.o
 
 .PHONY=all
 all: dirs henryos.bin create-grub
@@ -54,7 +54,8 @@ create-grub: henryos.bin
 	@echo "Successfully created ISO file."
 
 run:
-	qemu-system-i386 -drive format=raw,file=$(OS_OUT)/henryos.iso
+	qemu-system-i386 -d pcall,cpu_reset,int -no-reboot \
+	-drive format=raw,file=$(OS_OUT)/henryos.iso
 
 clean:
 	@if [ -d $(OUT_DIR) ]; then \

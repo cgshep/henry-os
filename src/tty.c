@@ -1,4 +1,5 @@
-#include "tty.h" 
+#include "tty.h"
+#include "string.h"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -10,7 +11,7 @@ uint16_t* terminal_buffer;
 
 
 static inline uint8_t vga_entry_colour(enum vga_colour fg,
-				      enum vga_colour bg) 
+				       enum vga_colour bg) 
 {
     return fg | bg << 4;
 }
@@ -19,15 +20,6 @@ static inline uint16_t vga_entry(unsigned char uc,
 				 uint8_t colour) 
 {
     return (uint16_t) uc | (uint16_t) colour << 8;
-}
-
-
-size_t strlen(const char* str)
-{
-	size_t len = 0;
-	while (str[len])
-	    len++;
-	return len;
 }
 
 void terminal_initialize() 
@@ -45,7 +37,17 @@ void terminal_initialize()
     }
 }
 
+static const char *banner = "\n~~~~~~~~~~~~~~~~~~~~~~~~~\n"\
+    "   /\\___/\\\n   | o o |\n  __\\_^_/__\n"\
+    " (__/   \\__)    Henry OS\n"\
+    "  _|  .  |_\n (__\\___/__)\n\n" \
+    "~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 
+
+void terminal_print_banner()
+{
+    terminal_write_string(banner);
+}
 void terminal_set_colour(uint8_t colour) 
 {
     terminal_colour = colour;
@@ -102,7 +104,13 @@ void terminal_put_char(char c)
 	}
     }
 }
- 
+
+void terminal_write_hex(uint32_t byte)
+{
+    char *str = itoa(byte, 16);
+    terminal_write_string(str);
+}
+
 void terminal_write(const char* data, size_t size) 
 {
     for (size_t i = 0; i < size; i++)

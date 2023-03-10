@@ -26,12 +26,12 @@ enum vga_colour {
 };
 
 void terminal_write_string(const char* data);
+void terminal_write_hex(uint32_t byte);
 void terminal_write(const char* data, size_t size);
+void terminal_print_banner();
 void terminal_put_char(char c);
 void terminal_scroll_up();
 void terminal_put_entry_at(char c, uint8_t colour, size_t x, size_t y);
 void terminal_set_colour(uint8_t colour);
 void terminal_initialize();
-size_t strlen(const char* str);
-
 #endif
