@@ -4,6 +4,8 @@
 
 #include "tty.h"
 #include "string.h"
+#include "idt.h"
+
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
@@ -22,8 +24,9 @@ uint64_t get_time()
     return ((uint64_t) b) | (((uint64_t) a) << 32);
 }
 
-void kernel_main(void) 
+void kernel_main()
 {
+    setup_idt();
     terminal_initialize();
     terminal_write_string("#################################\n");
     terminal_write_string("#####  Welcome to Henry OS! #####\n");
