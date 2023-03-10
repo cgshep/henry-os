@@ -22,7 +22,6 @@ uint64_t get_time()
     return ((uint64_t) b) | (((uint64_t) a) << 32);
 }
 
-
 void kernel_main(void) 
 {
     terminal_initialize();
