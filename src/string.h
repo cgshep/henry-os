@@ -6,5 +6,5 @@
 
 size_t strlen(const char* str);
 char* itoa(int val, int base);
-
+void* memset(void* bufptr, int value, size_t size);
 #endif

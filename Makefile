@@ -8,7 +8,7 @@ CC:=i686-elf-gcc
 ASM:=nasm
 CFLAGS:=-std=gnu99 -ffreestanding -O0 -Wall -Wextra
 
-OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o $(OBJ)/string.o
+OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o $(OBJ)/string.o $(OBJ)/idt.o $(OBJ)/interrupts.o
 
 .PHONY=all
 all: dirs henryos.bin create-grub
