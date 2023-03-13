@@ -71,7 +71,7 @@ uint8_t is_kbd_char_allowed(uint8_t kbd_char);
 #define    KBD_RNUM_LOCK         0x45
 #define    KBD_RDEL              0x53
 
-#define    MAX_KEYBOARD_BUFFER   256
+
 
 /*
  * Scan code look up tables for non-shift and shifted
