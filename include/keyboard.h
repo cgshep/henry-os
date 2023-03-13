@@ -45,10 +45,9 @@ uint8_t is_kbd_char_allowed(uint8_t kbd_char);
 #define    KBD_META_ALT     0x0200                                // Alt is pressed
 #define    KBD_META_CTRL    0x0400                                // Ctrl is pressed
 #define    KBD_META_SHIFT   0x0800                                // Shift is pressed
-#define    KBD_META_ANY    (KBD_META_ALT | KBD_META_CTRL | KBD_META_SHIFT)
 #define    KBD_META_CAPS    0x1000                                // CapsLock is on
 #define    KBD_META_NUM     0x2000                                // NumLock is on
-#define    KBD_META_SCRL    0x4000                                // ScrollLock is on
+#define    KBD_META_SCRL    0x4000
 
 // Other keys
 #define    KBD_PRNT    ( KBD_RETURN + 1 )
@@ -70,8 +69,6 @@ uint8_t is_kbd_char_allowed(uint8_t kbd_char);
 #define    KBD_RSCROLL_LOCK      0x46
 #define    KBD_RNUM_LOCK         0x45
 #define    KBD_RDEL              0x53
-
-
 
 /*
  * Scan code look up tables for non-shift and shifted

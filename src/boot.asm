@@ -38,8 +38,9 @@ start_protected_mode:
 	mov fs, ax
 	mov gs, ax
 
-	extern kernel_main
-	call kernel_main
+	;;  Call our kernel's main function
+	extern kmain
+	call kmain
 	
 	cli
 .hang:	hlt

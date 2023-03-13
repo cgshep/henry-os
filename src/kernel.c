@@ -42,13 +42,8 @@ void debug_test_software_interrupts()
 }
 #endif
 
-void kernel_main()
+void kmain()
 {
-    /*
-     * 1. Initialise IDT
-     * 2. Configure PIC
-     * 3. Handle keyboard input
-     */
     idt_init();
     pic_init();
     timer_install();
@@ -61,5 +56,4 @@ void kernel_main()
 #ifdef DEBUG_MODE
     debug_test_software_interrupts();
 #endif
-    for(;;){}
 }

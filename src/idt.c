@@ -1,8 +1,13 @@
 #include "idt.h"
 #include "string.h"
 #include "tty.h"
+#define MAX_IDT_ENTRIES 256
 
-/* Defines an IDT entry */
+/* 
+ * Defines an IDT entry. We use the packed attribute
+ * force GCC to add no extra padding and other
+ * data between each struct field.
+ */
 typedef struct
 {
     uint16_t base_low;
@@ -19,22 +24,16 @@ typedef struct
     uint32_t base;
 } __attribute__((packed)) idt_descriptor;
 
-/* Declare an IDT of 256 entries. Although we will only use the
-*  first 32 entries in this tutorial, the rest exists as a bit
-*  of a trap. If any undefined IDT entry is hit, it normally
-*  will cause an "Unhandled Interrupt" exception. Any descriptor
-*  for which the 'presence' bit is cleared (0) will generate an
-*  "Unhandled Interrupt" exception */
-idt_entry idt[256];
+idt_entry idt[MAX_IDT_ENTRIES];
 idt_descriptor idtd;
+
+extern void *isr_stub_table[];
 
 void exception_handler()
 {
     terminal_write_string("WE INTERRUPTED!\n");
 }
 
-/* Use this function to set an entry in the IDT. Alot simpler
-*  than twiddling with the GDT ;) */
 void idt_set_gate(uint8_t num, void* base,
 		  uint16_t sel, uint8_t flags)
 {
@@ -49,9 +48,6 @@ void idt_set_gate(uint8_t num, void* base,
     idt[num].flags = flags;
 }
 
-
-extern void *isr_stub_table[];
-
 void idt_init()
 {
     idtd.limit = (sizeof(idt_entry) * 256) - 1;
@@ -59,11 +55,9 @@ void idt_init()
 
     memset(&idt, 0, sizeof(idt_entry) * 256);
 
-    /* Add any new ISRs to the IDT here using idt_set_gate */
     for(size_t i = 0; i < 32; i++) {
 	idt_set_gate(i, isr_stub_table[i], 0x08, 0x8E);
     }
 
-    /* Load IDT */
     asm volatile ("lidt %0" :: "m"(idtd));
 }

@@ -1,14 +1,14 @@
 	[bits 32]
 %macro isr_err_stub 1
 isr_stub_%+%1:
-    call exception_handler
-    iret 
+	call exception_handler
+	iret 
 %endmacro
 ; if writing for 64-bit, use iretq instead
 %macro isr_no_err_stub 1
 isr_stub_%+%1:
-    call exception_handler
-    iret
+	call exception_handler
+	iret
 %endmacro
 
 extern exception_handler
@@ -49,7 +49,7 @@ global isr_stub_table
 isr_stub_table:
 %assign i 0 
 %rep    32 
-    dd isr_stub_%+i ; use DQ instead if targeting 64-bit
+    dd isr_stub_%+i
 %assign i i+1 
 %endrep
 	
@@ -67,7 +67,7 @@ global irq_stub_table
 irq_stub_table:
 %assign i 0 
 %rep    16
-    dd irq_stub_%+i ; use DQ instead if targeting 64-bit
+	dd irq_stub_%+i ; use DQ instead if targeting 64-bit
 %assign i i+1 
 %endrep
 

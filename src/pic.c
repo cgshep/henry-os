@@ -38,6 +38,8 @@
 #define PIC_PRIMARY_ATA_IRQ   14
 #define PIC_SECONDARY_ATA_IRQ 15
 
+extern void *irq_stub_table[];
+
 void enable_interrupts()
 {
     asm volatile("sti":);
@@ -87,8 +89,8 @@ void pic_remap()
     //uint8_t master_pic_mask, slave_pic_mask;
 
     /*
-     * Use the master and slave PICs' data ports
-     * to get the current interrupt masks.
+     * We can save the PICs default mask, but we'll only
+     * be remapping once, so it's left for future reference.
      */
     //master_pic_mask = inb(PIC_MASTER_DATA_PORT);
     //slave_pic_mask = inb(PIC_SLAVE_DATA_PORT);
@@ -126,8 +128,6 @@ void pic_remap()
     outb(PIC_MASTER_DATA_PORT, 0x0);
     outb(PIC_SLAVE_DATA_PORT, 0x0); 
 }
-
-extern void *irq_stub_table[];
 
 void irq_handler()
 {
@@ -208,5 +208,5 @@ void pic_init()
 
     enable_keyboard_irq();
     outb(PIC_MASTER_DATA_PORT,0xfd);
-    //outb(PIC_SLAVE_DATA_PORT,0xff);
+    outb(PIC_SLAVE_DATA_PORT,0xff);
 }
