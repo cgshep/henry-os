@@ -7,7 +7,6 @@
 #include "string.h"
 
 #define TERMINAL_PROMPT ">> "
-#define TERMINAL_PROMPT_LEN 3
 #define VGA_MEMORY_LOCATION 0xB8000
 
 enum vga_colour {
