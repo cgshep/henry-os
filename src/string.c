@@ -1,6 +1,8 @@
 #include "tty.h"
 #include "string.h"
 
+#include <stddef.h>
+
 /*
  * puts is nothing special; just a wrapper
  * for terminal_write_string from tty.h
@@ -30,8 +32,9 @@ char* itoa(int val, int base)
 
 void* memset(void* bufptr, int value, size_t size) {
 	unsigned char* buf = (unsigned char*) bufptr;
-	for (size_t i = 0; i < size; i++)
-		buf[i] = (unsigned char) value;
+	for (size_t i = 0; i < size; i++) {
+	    buf[i] = (unsigned char) value;
+	}
 	return bufptr;
 }
 
@@ -41,4 +44,14 @@ size_t strlen(const char* str)
 	while (str[len])
 	    len++;
 	return len;
+}
+
+
+void subchar(char *str, char target_char, char replacement_char)
+{
+    while(*str) {
+	if (*str == target_char)
+	    *str = replacement_char;
+	str++;
+    }
 }

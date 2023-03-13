@@ -23,7 +23,7 @@ uint64_t get_time()
     return ((uint64_t) b) | (((uint64_t) a) << 32);
 }
 
-#ifdef DEBUG_MODE
+#ifdef DEBUG_INTERRUPTS
 void debug_test_software_interrupts()
 {
     asm("int $0x01":);
@@ -57,7 +57,7 @@ void kmain()
     console_init();
     enable_interrupts();
 
-#ifdef DEBUG_MODE
+#ifdef DEBUG_INTERRUPTS
     debug_test_software_interrupts();
 #endif
     loop();

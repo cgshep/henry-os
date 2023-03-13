@@ -10,7 +10,17 @@ CFLAGS:=$(CFLAGS) -std=gnu99 -ffreestanding -O0 -Wall -Wextra
 INCLUDE_DIRS:=include
 INC:=-I$(INCLUDE_DIRS)/
 
-OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o $(OBJ)/string.o $(OBJ)/idt.o $(OBJ)/interrupts.o $(OBJ)/pic.o $(OBJ)/timer.o $(OBJ)/keyboard.o $(OBJ)/console.o
+OBJS=$(OBJ)/tty.o \
+$(OBJ)/kernel.o \
+$(OBJ)/boot.o \
+$(OBJ)/string.o \
+$(OBJ)/idt.o \
+$(OBJ)/interrupts.o \
+$(OBJ)/pic.o \
+$(OBJ)/timer.o \
+$(OBJ)/keyboard.o \
+$(OBJ)/console.o \
+$(OBJ)/strtok.o
 
 .PHONY=all
 all: dirs henryos.bin create-grub
