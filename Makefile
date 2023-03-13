@@ -7,13 +7,14 @@ OS_OUT:=$(OUT_DIR)/dist
 CC:=i686-elf-gcc
 ASM:=nasm
 CFLAGS:=$(CFLAGS) -std=gnu99 -ffreestanding -O0 -Wall -Wextra
+INCLUDE_DIRS:=include
+INC:=-I$(INCLUDE_DIRS)/
 
 OBJS=$(OBJ)/tty.o $(OBJ)/kernel.o $(OBJ)/boot.o $(OBJ)/string.o $(OBJ)/idt.o $(OBJ)/interrupts.o $(OBJ)/pic.o $(OBJ)/timer.o $(OBJ)/keyboard.o
 
 .PHONY=all
 all: dirs henryos.bin create-grub
 	@echo "Done!"
-	@echo $(CFLAGS)
 
 dirs:
 	@if [ ! -d $(OBJ) ]; then \
@@ -30,7 +31,7 @@ dirs:
 	fi
 
 $(OBJ)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)
 
 $(OBJ)/%.o: $(SRC_DIR)/%.asm
 	$(ASM) -felf32 $< -o $@

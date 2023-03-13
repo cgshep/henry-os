@@ -1,5 +1,5 @@
-#include "string.h"
 #include "tty.h"
+#include "string.h"
 
 /*
  * puts is nothing special; just a wrapper
