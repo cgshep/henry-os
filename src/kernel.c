@@ -42,6 +42,10 @@ void debug_test_software_interrupts()
 }
 #endif
 
+void loop() {
+    for (;;){}
+}
+
 void kmain()
 {
     idt_init();
@@ -56,4 +60,6 @@ void kmain()
 #ifdef DEBUG_MODE
     debug_test_software_interrupts();
 #endif
+    loop();
+
 }
