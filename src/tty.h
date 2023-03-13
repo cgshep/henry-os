@@ -6,6 +6,10 @@
 
 #include "string.h"
 
+#define TERMINAL_PROMPT ">> "
+#define TERMINAL_PROMPT_LEN 3
+#define VGA_MEMORY_LOCATION 0xB8000
+
 enum vga_colour {
 	VGA_COLOUR_BLACK = 0,
 	VGA_COLOUR_BLUE = 1,
@@ -25,6 +29,9 @@ enum vga_colour {
 	VGA_COLOUR_WHITE = 15,
 };
 
+void terminal_new_cmd();
+void terminal_cmd_delete_last_char();
+void terminal_cmd_putch(char c);
 void terminal_write_string(const char* data);
 void terminal_write_hex(uint32_t byte);
 void terminal_write(const char* data, size_t size);
@@ -33,5 +40,6 @@ void terminal_put_char(char c);
 void terminal_scroll_up();
 void terminal_put_entry_at(char c, uint8_t colour, size_t x, size_t y);
 void terminal_set_colour(uint8_t colour);
-void terminal_initialize();
+void terminal_init();
+
 #endif

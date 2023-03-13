@@ -1,4 +1,19 @@
 #include "string.h"
+#include "tty.h"
+
+/*
+ * puts is nothing special; just a wrapper
+ * for terminal_write_string from tty.h
+ */
+void puts(char* str)
+{
+    terminal_write_string(str);
+}
+
+void putch(char c)
+{
+    terminal_put_char(c);
+}
 
 /*
  * Thanks to Robert Jan Schaper

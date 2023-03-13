@@ -1,5 +1,6 @@
 #include "idt.h"
 #include "string.h"
+#include "tty.h"
 
 /* Defines an IDT entry */
 typedef struct
@@ -27,6 +28,11 @@ typedef struct
 idt_entry idt[256];
 idt_descriptor idtd;
 
+void exception_handler()
+{
+    terminal_write_string("WE INTERRUPTED!\n");
+}
+
 /* Use this function to set an entry in the IDT. Alot simpler
 *  than twiddling with the GDT ;) */
 void idt_set_gate(uint8_t num, void* base,
@@ -44,7 +50,7 @@ void idt_set_gate(uint8_t num, void* base,
 }
 
 
-extern void* isr_stub_table[];
+extern void *isr_stub_table[];
 
 void idt_init()
 {
@@ -54,11 +60,10 @@ void idt_init()
     memset(&idt, 0, sizeof(idt_entry) * 256);
 
     /* Add any new ISRs to the IDT here using idt_set_gate */
-    for(size_t i = 0; i<32; i++) {
+    for(size_t i = 0; i < 32; i++) {
 	idt_set_gate(i, isr_stub_table[i], 0x08, 0x8E);
     }
 
-    /* Load IDT, then start interrupts */
+    /* Load IDT */
     asm volatile ("lidt %0" :: "m"(idtd));
-    asm volatile ("sti");
 }
