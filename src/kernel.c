@@ -8,7 +8,7 @@
 #include "pic.h"
 #include "timer.h"
 #include "keyboard.h"
-
+#include "console.h"
 
 /* This tutorial will only work for the 32-bit ix86 targets. */
 #if !defined(__i386__)
@@ -54,8 +54,9 @@ void kernel_main()
     timer_install();
     terminal_init();
     terminal_print_banner();
-    enable_interrupts();
     keyboard_init();
+    console_init();
+    enable_interrupts();
 
 #ifdef DEBUG_MODE
     debug_test_software_interrupts();

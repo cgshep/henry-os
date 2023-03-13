@@ -1,17 +1,15 @@
 #include "keyboard.h"
 #include "tty.h"
 #include "string.h"
+#include "console.h"
 
 #include <stdint.h>
 
 static uint8_t shift_down = 0;
-uint8_t kbd_buffer[MAX_KEYBOARD_BUFFER];
-uint8_t kbd_buffer_ptr;
 
 void keyboard_init()
 {
-    // do we have to zero the buffer
-    kbd_buffer_ptr = kbd_buffer[0];
+    // Placeholder
 }
 
 void print_key(uint8_t ascii_char)
@@ -83,6 +81,8 @@ char get_key_char(uint8_t scan_code)
     return KBD_NULL;
 }
 
+
+
 void process_key(uint8_t scan_code)
 {
     /*
@@ -96,21 +96,15 @@ void process_key(uint8_t scan_code)
     char kbd_char = get_key_char(scan_code);
     if (kbd_char != KBD_NULL) {
 	if(kbd_char == KBD_BACKSPACE) {
-	    terminal_cmd_delete_last_char();
-	    kbd_buffer[kbd_buffer_ptr--] = 0;
+
+	    console_delete_last_cmd_char();
 	}
-	else if(kbd_char == KBD_ENTER || kbd_char == KBD_RETURN) {
-	    // Do processing
-	    terminal_new_cmd();
-#ifdef DEBUG_MODE
-	    puts("TIME TO PROCESS!\n");
-#endif
+	else if(kbd_char == KBD_ENTER ||
+		kbd_char == KBD_RETURN) {
+	    console_process_cmd_buffer();
 	}
 	else {
-	    if (kbd_buffer_ptr < MAX_KEYBOARD_BUFFER) {
-		kbd_buffer[kbd_buffer_ptr++] = kbd_char;
-		terminal_cmd_putch(kbd_char);
-	    }
+	    console_new_cmd_char(kbd_char);
 	}
     }
 }

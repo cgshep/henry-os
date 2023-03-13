@@ -23,14 +23,17 @@ static inline uint16_t vga_entry(unsigned char uc,
     return (uint16_t) uc | (uint16_t) colour << 8;
 }
 
-static const char *banner = "\n~~~~~~~~~~~~~~~~~~~~~~~~~\n"\
-    "   /\\___/\\\n"\
-    "   | o o |\n"\
-    "  __\\_^_/__\n" \
-    " (__/   \\__)    Henry OS\n"\
-    "  _|  .  |_\n"\
-    " (__\\___/__)\n\n" \
-    "~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+static const char *banner =
+    "\n @@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"		\
+    " @                           @\n"\
+    " @    /\\___/\\                @\n"\
+    " @    | o o |                @\n"\
+    " @   __\\_^_/__               @\n" \
+    " @  (__/   \\__)   Henry OS   @\n"\
+    " @   _|  .  |_               @\n"\
+    " @  (__\\___/__)              @\n" \
+    " @                           @\n"\
+    " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
 void terminal_print_banner()
 {
@@ -91,7 +94,7 @@ void terminal_cmd_delete_last_char()
     }
 
     /*
-     * Handle wrap-arounds.
+     * Handle underruns.
      */
     if (terminal_row > terminal_cmd_start_row &&
 	terminal_column == 0) {
@@ -123,8 +126,7 @@ void terminal_cmd_putch(char c)
 void terminal_put_char(char c) 
 {
     /*
-     * Handle new-line chars by moving
-     * to a new row
+     * Handle new-line chars.
      */
     if (c == '\n') {
 	// Skip to end of line
@@ -147,24 +149,24 @@ void terminal_put_char(char c)
 	    // Cursor has reached our limit;
 	    // we need to scroll up.
 	    terminal_scroll_up();
-	}
+ 	}
     }
 }
 
 void terminal_write_hex(uint32_t byte)
 {
-    char *str = itoa(byte, 16);
-    terminal_write_string(str);
+    terminal_write_string("0x");
+    terminal_write_string(itoa(byte, 16));
 }
 
 void terminal_write(const char* data, size_t size) 
 {
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++) {
 	terminal_put_char(data[i]);
+    }
 }
  
 void terminal_write_string(const char* data) 
 {
     terminal_write(data, strlen(data));
-}
- 
+} 
