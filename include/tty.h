@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-
 #define TERMINAL_PROMPT ">> "
 #define VGA_MEMORY_LOCATION 0xB8000
 
