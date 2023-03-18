@@ -153,10 +153,17 @@ void terminal_put_char(char c)
     }
 }
 
-void terminal_write_hex(uint32_t byte)
+void terminal_write_int(uint32_t val)
 {
+    char tmp_str[10]; // 32-bit int = 10 decimal chars
+    terminal_write_string(itoa(val, tmp_str, 10));
+}
+
+void terminal_write_hex(uint32_t val)
+{
+    char tmp_str[8];
     terminal_write_string("0x");
-    terminal_write_string(itoa(byte, 16));
+    terminal_write_string(itoa(val, tmp_str, 16));
 }
 
 void terminal_write(const char* data, size_t size) 

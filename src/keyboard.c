@@ -96,7 +96,6 @@ void process_key(uint8_t scan_code)
     char kbd_char = get_key_char(scan_code);
     if (kbd_char != KBD_NULL) {
 	if(kbd_char == KBD_BACKSPACE) {
-
 	    console_delete_last_cmd_char();
 	}
 	else if(kbd_char == KBD_ENTER ||
