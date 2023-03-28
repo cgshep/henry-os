@@ -5,7 +5,7 @@ Henry OS is a basic X86 operating system built from first principles for researc
 It provides a more sophisticated and useful 'bare bones' implementation for prototyping advanced OS concepts and ideas.
 
 
-<img src="henryos_screenshot.png" alt="Henry OS screenshot" width="75%" height="75%" />
+<img src="henryos_screenshot.png" alt="Henry OS screenshot" width="45%" height="45%" />
 
 ## Features
 
