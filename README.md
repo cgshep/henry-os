@@ -1,22 +1,21 @@
 # Henry OS
 
-Henry OS is a basic X86 operating system built from first principles for research and educational purposes.
+Henry OS is a X86 operating system built from first principles for research and educational purposes.
 
-It provides a more sophisticated and useful 'bare bones' implementation for prototyping advanced OS concepts and ideas.
+It provides a more useful, sophisticated 'bare bones' implementation for prototyping advanced OS concepts and ideas.
 
 <img src="henryos_screenshot.png" alt="Henry OS screenshot" width="50%" height="50%" />
 
 ## Features
 
-+ Integrates GNU GRUB / multiboot for reaching (32-bit) protected mode from real mode.
-+ Builds the OS into an ISO that works in QEMU.
++ Uses GNU GRUB / multiboot for reaching (32-bit) protected mode from real mode.
++ Builds a ISO that works in QEMU.
 + GDT, IDT, and PIC implementations using X86 ASM and C.
-+ A scrolling terminal implementation with keyboard input.
-+ Functional software interrupts, e.g. use `int` in X86 ASM.
-+ Hardware IRQs: see `keyboard.c`
++ Scrolling console that uses keyboard input.
++ Software interrupts, e.g. use `int` in X86 ASM.
++ Working hardware IRQs: see `keyboard.c`
 + A mini C stdlib.
-+ A built-in reverse Polish notation calculator via `calc`
-+ Works in QEMU.
++ A built-in reverse Polish notation calculator; use the `calc` command.
 
 ## Usage
 
@@ -25,12 +24,12 @@ It provides a more sophisticated and useful 'bare bones' implementation for prot
 3. Run `make` to build Henry OS, then `make run` to run it in QEMU.
 4. Make your own changes and have fun!
 
-Disclaimer: this project has only been tested under QEMU.
+/Disclaimer: this project has only been tested under QEMU./
 
 ## Notes
 
-+ After `make run`, QEMU runs the ISO, which uses GNU GRUB to run our multiboot image made from `src/boot.asm`.
-+ `boot.asm` calls `kmain()` in `src/kernel.c`.
++ After `make run`, QEMU runs the ISO, which uses GNU GRUB to run our multiboot image made from `src/boot.asm`
++ `boot.asm` calls `kmain()` in `src/kernel.c`
 + The IDT, PIC, and terminal are initialised before enabling interrupts.
 + The OS loops until it receives user input via the keyboard.
 
