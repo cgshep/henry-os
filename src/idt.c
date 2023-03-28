@@ -17,7 +17,6 @@ typedef struct
     uint16_t base_high;
 } __attribute__((packed)) idt_entry;
 
-
 typedef struct
 {
     uint16_t limit;

@@ -6,7 +6,6 @@
 #include "string.h"
 #include "idt.h"
 #include "pic.h"
-#include "timer.h"
 #include "keyboard.h"
 #include "console.h"
 
@@ -15,16 +14,8 @@
 #error "Must be compiled with the i386-elf compiler"
 #endif
 
-uint64_t get_time()
-{
-    uint32_t a, b;
-    // Use RDTSC
-    asm volatile ("rdtsc" : "=a"(a), "=d"(b));
-    return ((uint64_t) b) | (((uint64_t) a) << 32);
-}
-
 #ifdef DEBUG_INTERRUPTS
-void debug_test_software_interrupts()
+static void debug_test_software_interrupts()
 {
     terminal_write_string(">> Trying `int 0x01`...");
     asm("int $0x01":);
@@ -49,30 +40,29 @@ extern volatile uint32_t stack_top;
 extern volatile uint32_t heap_bottom;
 extern volatile uint32_t heap_top;
 
-void debug_memory_management()
+static void debug_memory_management()
 {
-    puts("\n");
-    puts("kernel.c stack_bottom: ");
+    puts("kernel.c stack_bottom: ", '');
     terminal_write_int((uint32_t)&stack_bottom);
-    puts(", stack_top: ");
+    puts(", stack_top:", ' ');
     terminal_write_int((uint32_t)&stack_top);
-    puts(", stack size: ");
+    puts(", stack size: ", ' ');
     terminal_write_int((uint32_t)&stack_top -
 		       (uint32_t)&stack_bottom);
 
-    puts("\n");
-    puts("kernel.c heap_bottom: ");
+    puts("\n", '');
+    puts("kernel.c heap_bottom:", ' ');
     terminal_write_int((uint32_t)&heap_bottom);
-    puts(", heap_top: ");
+    puts(", heap_top:", ' ');
     terminal_write_int((uint32_t)&heap_top);
-    puts(", heap size: ");
+    puts(", heap size:", ' ');
     terminal_write_int((uint32_t)&heap_top -
 		       (uint32_t)&heap_bottom);
-    puts("\n");
+    puts("\n", '');
 }
 #endif
 
-void loop() {
+static inline void loop() {
     for (;;){}
 }
 
@@ -80,7 +70,6 @@ void kmain()
 {
     idt_init();
     pic_init();
-    timer_install();
     terminal_init();
     terminal_print_banner();
     keyboard_init();

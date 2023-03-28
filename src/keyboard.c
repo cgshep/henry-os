@@ -36,11 +36,11 @@ void handle_shift_down(uint8_t scan_code)
 uint8_t is_kbd_char_allowed(uint8_t kbd_char)
 {
     size_t n = sizeof(allowed) / sizeof(uint8_t);
-    for (size_t i = 0; i < n; i++) {
-	if (kbd_char == allowed[i]) {
+
+    for (size_t i = 0; i < n; i++)
+	if (kbd_char == allowed[i])
 	    return 1;
-	}
-    }
+
     return 0;
 }
 
@@ -80,8 +80,6 @@ char get_key_char(uint8_t scan_code)
 
     return KBD_NULL;
 }
-
-
 
 void process_key(uint8_t scan_code)
 {

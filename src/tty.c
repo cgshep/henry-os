@@ -24,7 +24,7 @@ static inline uint16_t vga_entry(unsigned char uc,
 }
 
 static const char *banner =
-    "\n @@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"		\
+    "\n @@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"\
     " @                           @\n"\
     " @    /\\___/\\                @\n"\
     " @    | o o |                @\n"\
@@ -168,9 +168,8 @@ void terminal_write_hex(uint32_t val)
 
 void terminal_write(const char* data, size_t size) 
 {
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++)
 	terminal_put_char(data[i]);
-    }
 }
  
 void terminal_write_string(const char* data) 

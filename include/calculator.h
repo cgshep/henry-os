@@ -1,0 +1,6 @@
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
+
+#define MAX_CALCULATOR_STACK_SIZE 32
+
+#endif

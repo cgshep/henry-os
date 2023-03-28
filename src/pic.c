@@ -151,9 +151,9 @@ void irq_handler()
 	scan_code = inb(0x60);
 	process_key(scan_code);
 #ifdef DEBUG_MODE
-	puts("Scan code: ");
+	puts("Scan code:", ' ');
 	terminal_write_hex(scan_code);
-	puts("\n");
+	puts("\n", '');
 #endif
 	pic_send_eoi(PIC_KEYBOARD_IRQ);
 	break;

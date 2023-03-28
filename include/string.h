@@ -13,5 +13,9 @@ void subchar(char *str, char target_char, char replacement_char);
 char* strtok(char *s, const char *delim);
 char* strtok_r(char *s, const char *delim, char **last);
 uint8_t strcmp(char *str1, char *str2);
+double atof(const char *str);
+char *double_to_string(double value);
+int isdigit(int c);
+int isspace(int c);
 
 #endif

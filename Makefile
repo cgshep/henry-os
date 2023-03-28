@@ -17,10 +17,10 @@ $(OBJ)/string.o \
 $(OBJ)/idt.o \
 $(OBJ)/interrupts.o \
 $(OBJ)/pic.o \
-$(OBJ)/timer.o \
 $(OBJ)/keyboard.o \
 $(OBJ)/console.o \
-$(OBJ)/strtok.o
+$(OBJ)/strtok.o \
+$(OBJ)/calculator.o
 
 .PHONY=all
 all: dirs henryos.bin create-grub
@@ -40,7 +40,11 @@ dirs:
 		mkdir -p $(ISO_DIR); \
 	fi
 
-$(OBJ)/%.o: $(SRC_DIR)/%.c
+$(OBJ)/%.o: $(SRC_DIR)/%.c 
+	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)
+
+
+$(OBJ)/%.o: $(SRC_DIR)/apps/%.c
 	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)
 
 $(OBJ)/%.o: $(SRC_DIR)/%.asm
