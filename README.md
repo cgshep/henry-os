@@ -4,6 +4,9 @@ Henry OS is a basic X86 operating system built from first principles for researc
 
 It provides a more sophisticated and useful 'bare bones' implementation for prototyping advanced OS concepts and ideas.
 
+
+<img src="henryos_screenshot.png" alt="Henry OS screenshot" width="75%" height="75%" />
+
 ## Features
 
 + Integrates GNU GRUB / multiboot for reaching (32-bit) protected mode from real mode.
@@ -13,7 +16,7 @@ It provides a more sophisticated and useful 'bare bones' implementation for prot
 + Functional software interrupts, e.g. use `int` in X86 ASM.
 + Hardware IRQs: see `keyboard.c`
 + A mini C stdlib.
-+ Some basic commands, e.g. a calculator via `calc`
++ A built-in reverse Polish notation calculator via `calc`
 + Works in QEMU.
 
 ## Usage
@@ -24,10 +27,6 @@ It provides a more sophisticated and useful 'bare bones' implementation for prot
 4. Make your own changes and have fun!
 
 Note that the project has only been tested using QEMU.
-
-## Screenshot
-
-![Henry OS screenshot](henryos_screenshot.png)
 
 ## Credits
 
