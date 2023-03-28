@@ -22,10 +22,10 @@ It provides a more sophisticated and useful 'bare bones' implementation for prot
 
 1. Clone the repo.
 2. Get [i686-elf-tools](https://github.com/lordmilko/i686-elf-tools) up and running.
-3. Run `make` to build Henry OS, then `make run` to run it in QEMU
+3. Run `make` to build Henry OS, then `make run` to run it in QEMU.
 4. Make your own changes and have fun!
 
-Note that the project has only been tested using QEMU.
+Disclaimer: this project has only been tested under QEMU.
 
 ## Notes
 
