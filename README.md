@@ -24,7 +24,7 @@ It provides a more useful, sophisticated 'bare bones' implementation for prototy
 3. Run `make` to build Henry OS, then `make run` to run it in QEMU.
 4. Make your own changes and have fun!
 
-/Disclaimer: this project has only been tested under QEMU./
+*Disclaimer: this project has only been tested under QEMU.*
 
 ## Notes
 
