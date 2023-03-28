@@ -4,14 +4,13 @@ Henry OS is a basic X86 operating system built from first principles for researc
 
 It provides a more sophisticated and useful 'bare bones' implementation for prototyping advanced OS concepts and ideas.
 
-
 <img src="henryos_screenshot.png" alt="Henry OS screenshot" width="50%" height="50%" />
 
 ## Features
 
 + Integrates GNU GRUB / multiboot for reaching (32-bit) protected mode from real mode.
 + Builds the OS into an ISO that works in QEMU.
-+ GDT and IDT implementation in X86 ASM and C respectively.
++ GDT, IDT, and PIC implementations using X86 ASM and C.
 + A scrolling terminal implementation with keyboard input.
 + Functional software interrupts, e.g. use `int` in X86 ASM.
 + Hardware IRQs: see `keyboard.c`
@@ -27,6 +26,13 @@ It provides a more sophisticated and useful 'bare bones' implementation for prot
 4. Make your own changes and have fun!
 
 Note that the project has only been tested using QEMU.
+
+## Notes
+
++ After `make run`, QEMU runs the ISO, which uses GNU GRUB to run our multiboot image made from `src/boot.asm`.
++ `boot.asm` calls `kmain()` in `src/kernel.c`.
++ The IDT, PIC, and terminal are initialised before enabling interrupts.
++ The OS loops until it receives user input via the keyboard.
 
 ## Credits
 
