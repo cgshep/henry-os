@@ -46,7 +46,7 @@ void terminal_init()
     terminal_row = 0;
     terminal_column = 0;
     terminal_colour = vga_entry_colour(VGA_COLOUR_WHITE,
-				       VGA_COLOUR_GREEN);
+				       VGA_COLOUR_BLUE);
     terminal_buffer = (uint16_t*) VGA_MEMORY_LOCATION;
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
 	for (size_t x = 0; x < VGA_WIDTH; x++) {
