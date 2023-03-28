@@ -1,6 +1,6 @@
 # Henry OS
 
-Henry OS is a X86 operating system built from first principles for research and educational purposes.
+Henry OS is an X86 operating system built from first principles for research and educational purposes.
 
 It provides a more useful, sophisticated 'bare bones' implementation for prototyping advanced OS concepts and ideas.
 
