@@ -14,12 +14,12 @@ int demo_ascon_aead()
     unsigned char m1[16] = {0};
     unsigned char c[32], h[32], t[32];
     unsigned long long alen = 16;
-    unsigned long long mlen = 16, m1_len=16;
+    unsigned long long mlen = 16, m1_len=16, i;
     unsigned long long clen = CRYPTO_ABYTES;
 
     int res = 0;
     puts(" ** m ** \n");
-    for (long long i = 0; i < mlen; i++){
+    for (i = 0; i < mlen; i++){
 	terminal_write_hex(m[i]);
 	putch(' ');
     }
@@ -29,8 +29,8 @@ int demo_ascon_aead()
     puts("ASCON res: ");
     terminal_write_int(res);
     puts("\n ** Ciphertext ** \n");
-    for (long long i = 0; i < clen; i++){
-	putch(c[i]);
+    for (i = 0; i < clen; i++){
+	terminal_write_hex(c[i]);
 	putch(' ');
     }
     puts("\n");
@@ -39,7 +39,7 @@ int demo_ascon_aead()
     puts("ASCON res: ");
     terminal_write_int(res);
     puts("\n ** m1 ** \n");
-    for (long long i = 0; i < m1_len; i++){
+    for (i = 0; i < m1_len; i++){
 	terminal_write_hex(m1[i]);
 	putch(' ');
     }
