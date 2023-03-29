@@ -6,7 +6,7 @@ BIN:=$(OUT_DIR)/bin
 OS_OUT:=$(OUT_DIR)/dist
 CC:=i686-elf-gcc
 ASM:=nasm
-CFLAGS:=$(CFLAGS) -std=gnu99 -ffreestanding -O0 -Wall -Wextra
+CFLAGS:=$(CFLAGS) -std=gnu11 -ffreestanding -O0 -Wall -Wextra
 INCLUDE_DIRS:=include
 INC:=-I$(INCLUDE_DIRS)/
 

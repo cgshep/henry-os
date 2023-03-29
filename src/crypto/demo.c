@@ -3,14 +3,14 @@
 #include "string.h"
 #include "tty.h"
 
-int demo_ascon_aead()
+int demo_ascon_aead(char **args, int n_args)
 {
     unsigned char n[CRYPTO_NPUBBYTES] = {0, 1, 2,  3,  4,  5,  6,  7,
 	8, 9, 10, 11, 12, 13, 14, 15};
     unsigned char k[CRYPTO_KEYBYTES] = {0, 1, 2,  3,  4,  5,  6,  7,
 	8, 9, 10, 11, 12, 13, 14, 15};
     unsigned char a[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-    unsigned char m[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    unsigned char m[16] = {0xD, 0xE, 0xA, 0xD, 0xB, 0xE, 0xE, 0xF, 0xC, 0xA, 0xF, 0xE, 0x0, 0x1, 0x2, 0x3};
     unsigned char m1[16] = {0};
     unsigned char c[32], h[32], t[32];
     unsigned long long alen = 16;
@@ -43,7 +43,6 @@ int demo_ascon_aead()
 	terminal_write_hex(m1[i]);
 	putch(' ');
     }
-    puts("\n");
 
     return res;
 }

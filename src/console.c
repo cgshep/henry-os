@@ -16,20 +16,29 @@ typedef struct {
     cmd_func_ptr_t func;
 } console_cmd_tuple_t;
 
+
 static const console_cmd_tuple_t console_cmds[] = {
     {"calc", calculator},
     {"hello", hello},
     {"cmds", cmds},
     {"ascon_demo", demo_ascon_aead},
+    {"??", last_ret_code}
 };
 
 static char cmd_buffer[MAX_CMD_BUFFER];
 static size_t cmd_buffer_pos;
 static size_t n_cmds = sizeof(console_cmds) / sizeof(console_cmds[0]);
+static int console_ret_code=0;
 
 /*
  * Console commands
  */
+int last_ret_code(char **args, int n_args)
+{
+    terminal_write_int(console_ret_code);
+    return 0;
+}
+
 int hello(char **args, int n_args)
 {
     puts("Hello, world!");
@@ -106,28 +115,28 @@ static void reset_cmd_buffer()
 void console_process_cmd_buffer()
 {
     char *cmd_args[MAX_ARGS] = {0};
-    int ret, cmd_idx, n_args;
+    int cmd_idx, n_args;
     
     n_args = tokenise_string(cmd_buffer,
 			     CONSOLE_DELIMS,
 			     cmd_args);
-
+    putch('\n');
     if (n_args > 0) {
-	putch('\n');
+	
 	cmd_idx = parse_cmd(cmd_args, n_args);
 
 	if (cmd_idx < 0) {
 	    puts("Invalid command.");
 	}
 	else {
-	    ret = console_cmds[cmd_idx].func(cmd_args, n_args);
+	    console_ret_code = console_cmds[cmd_idx].func(cmd_args, n_args);
 	}
     }
     else {
-	puts("Invalid syntax.\n");
+	puts("Invalid syntax.");
     }
 
-    if(ret < 0) {
+    if(console_ret_code < 0) {
 	puts("Error!");
     }
 
