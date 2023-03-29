@@ -20,9 +20,15 @@ $(OBJ)/pic.o \
 $(OBJ)/keyboard.o \
 $(OBJ)/console.o \
 $(OBJ)/strtok.o \
-$(OBJ)/calculator.o
+$(OBJ)/calculator.o \
+$(OBJ)/demo.o \
+$(OBJ)/permutations.o \
+$(OBJ)/core.o \
+$(OBJ)/decrypt.o \
+$(OBJ)/encrypt.o
 
 .PHONY=all
+
 all: dirs henryos.bin create-grub
 	@echo "Done!"
 
@@ -43,6 +49,8 @@ dirs:
 $(OBJ)/%.o: $(SRC_DIR)/%.c 
 	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)
 
+$(OBJ)/%.o: $(SRC_DIR)/crypto/%.c
+	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)
 
 $(OBJ)/%.o: $(SRC_DIR)/apps/%.c
 	$(CC)  $(CFLAGS)  -c $< -o $@ $(INC)

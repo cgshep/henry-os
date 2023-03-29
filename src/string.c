@@ -93,9 +93,8 @@ double atof(const char *str)
     return result;
 }
 
-
-
-void reverse(char *str, int len) {
+void reverse(char *str, int len)
+{
     int start = 0;
     int end = len - 1;
     char temp;
@@ -109,7 +108,8 @@ void reverse(char *str, int len) {
     }
 }
 
-char *double_to_string(double value) {
+char *double_to_string(double value)
+{
     static char buffer[DOUBLE_STR_BUFFER_SIZE];
     int int_part = (int)value;
     double fractional_part = value - int_part;
@@ -190,11 +190,26 @@ char* itoa(int value, char* str, int base)
     return rc;
 }
 
-void* memset(void* bufptr, int value, size_t size) {
+void *memcpy(void *dest, const void *src, size_t n)
+{
+    char *d = (char *)dest;
+    const char *s = (const char *)src;
+
+    for (size_t i = 0; i < n; i++) {
+        d[i] = s[i];
+    }
+
+    return dest;
+}
+
+void *memset(void* bufptr, int value, size_t n)
+{
     uint8_t* buf = (uint8_t*) bufptr;
-    for (size_t i = 0; i < size; i++) {
+
+    for (size_t i = 0; i < n; i++) {
 	buf[i] = (uint8_t) value;
     }
+
     return bufptr;
 }
 

@@ -16,6 +16,7 @@ It provides a more useful, sophisticated 'bare bones' implementation for prototy
 + Working hardware IRQs: see `keyboard.c`
 + A mini C stdlib.
 + A built-in reverse Polish notation calculator; use the `calc` command.
++ **Experimental**: ASCON lightweight cipher integration.
 
 ## Usage
 
@@ -35,5 +36,6 @@ It provides a more useful, sophisticated 'bare bones' implementation for prototy
 
 ## Credits
 
-+ The [OSDev.org](https://osdev.org) community.
-+ The [OpenBSD](www.openbsd.org) project.
++ [OSDev.org](https://osdev.org) community.
++ [OpenBSD](www.openbsd.org) project.
++ The [ASCON](https://ascon.iaik.tugraz.at/) lightweight authetnicated encryption and hashing team.

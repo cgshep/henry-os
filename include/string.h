@@ -17,5 +17,6 @@ double atof(const char *str);
 char *double_to_string(double value);
 int isdigit(int c);
 int isspace(int c);
+void *memcpy(void *dest, const void *src, size_t n);
 
 #endif

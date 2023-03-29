@@ -8,6 +8,7 @@
 #include "pic.h"
 #include "keyboard.h"
 #include "console.h"
+#include "demo.h"
 
 /* This tutorial will only work for the 32-bit ix86 targets. */
 #if !defined(__i386__)
@@ -75,7 +76,12 @@ void kmain()
     keyboard_init();
     console_init();
     enable_interrupts();
-
+#ifdef DEBUG_DEMO_ASCON
+    int res = demo_ascon_aead();
+    puts("ASCON res: ");
+    terminal_write_int(res);
+    puts("\n");
+#endif
 #ifdef DEBUG_INTERRUPTS
     debug_test_software_interrupts();
 #endif
