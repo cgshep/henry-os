@@ -59,7 +59,7 @@ $(OBJ)/%.o: $(SRC_DIR)/%.asm
 	$(ASM) -felf32 $< -o $@
 
 henryos.bin: $(OBJS)
-	$(CC) -T linker.ld -o $(BIN)/$@ -ffreestanding -O0 -nostdlib -lgcc $(OBJS)
+	$(CC) -T linker.ld -o $(BIN)/$@ -ffreestanding -O2 -nostdlib -lgcc $(OBJS)
 
 create-grub: henryos.bin
 	@if grub-file --is-x86-multiboot $(BIN)/henryos.bin; then \

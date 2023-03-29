@@ -1,5 +1,5 @@
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef _CONSOLE_H
+#define _CONSOLE_H
 
 void console_init();
 void console_delete_last_cmd_char();

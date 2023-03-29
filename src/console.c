@@ -2,6 +2,7 @@
 #include "string.h"
 #include "console.h"
 #include "applications.h"
+#include "demo.h"
 
 #define MAX_CMD_BUFFER    32
 #define MAX_ARGS          16
@@ -19,6 +20,7 @@ static const console_cmd_tuple_t console_cmds[] = {
     {"calc", calculator},
     {"hello", hello},
     {"cmds", cmds},
+    {"ascon_demo", demo_ascon_aead},
 };
 
 static char cmd_buffer[MAX_CMD_BUFFER];
@@ -122,7 +124,7 @@ void console_process_cmd_buffer()
 	}
     }
     else {
-	puts("Invalid syntax.");
+	puts("Invalid syntax.\n");
     }
 
     if(ret < 0) {
