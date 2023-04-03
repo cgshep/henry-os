@@ -1,5 +1,6 @@
 #include "tty.h"
 #include "string.h"
+#include "pic.h"
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -35,6 +36,15 @@ static const char *banner =
     " @                           @\n"\
     " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
+static void update_cursor(int x, int y)
+{
+    uint16_t pos = y * VGA_WIDTH + x;
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, (uint8_t) (pos & 0xFF));
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
+
 void terminal_print_banner()
 {
     terminal_write_string(banner);
@@ -65,6 +75,7 @@ void terminal_put_entry_at(char c, uint8_t colour, size_t x, size_t y)
 {
     const size_t index = y * VGA_WIDTH + x;
     terminal_buffer[index] = vga_entry(c, colour);
+    update_cursor(x, y);
 }
 
 void terminal_scroll_up()

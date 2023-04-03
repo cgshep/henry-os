@@ -26,6 +26,16 @@ void puts(char* str)
     terminal_write_string(str);
 }
 
+void puthex(uint32_t n)
+{
+    terminal_write_hex(n);
+}
+
+void putint(uint32_t n)
+{
+    terminal_write_int(n);
+}
+
 double pow(double base, int exponent)
 {
     double result = 1.0;

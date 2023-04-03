@@ -7,6 +7,7 @@
 #include "idt.h"
 #include "pic.h"
 #include "keyboard.h"
+#include "memman.h"
 #include "console.h"
 #include "demo.h"
 
@@ -35,34 +36,6 @@ static void debug_test_software_interrupts()
 }
 #endif
 
-#ifdef DEBUG_MEMM
-extern volatile uint32_t stack_bottom;
-extern volatile uint32_t stack_top;
-extern volatile uint32_t heap_bottom;
-extern volatile uint32_t heap_top;
-
-static void debug_memory_management()
-{
-    puts("kernel.c stack_bottom: ", '');
-    terminal_write_int((uint32_t)&stack_bottom);
-    puts(", stack_top:", ' ');
-    terminal_write_int((uint32_t)&stack_top);
-    puts(", stack size: ", ' ');
-    terminal_write_int((uint32_t)&stack_top -
-		       (uint32_t)&stack_bottom);
-
-    puts("\n", '');
-    puts("kernel.c heap_bottom:", ' ');
-    terminal_write_int((uint32_t)&heap_bottom);
-    puts(", heap_top:", ' ');
-    terminal_write_int((uint32_t)&heap_top);
-    puts(", heap size:", ' ');
-    terminal_write_int((uint32_t)&heap_top -
-		       (uint32_t)&heap_bottom);
-    puts("\n", '');
-}
-#endif
-
 static inline void loop() {
     for (;;){}
 }
@@ -75,6 +48,7 @@ void kmain()
     terminal_print_banner();
     keyboard_init();
     console_init();
+    memman_init();
     enable_interrupts();
 #ifdef DEBUG_DEMO_ASCON
     int res = demo_ascon_aead();
@@ -84,9 +58,6 @@ void kmain()
 #endif
 #ifdef DEBUG_INTERRUPTS
     debug_test_software_interrupts();
-#endif
-#ifdef DEBUG_MEMM
-    debug_memory_management();
 #endif
     loop();
 }

@@ -13,14 +13,14 @@ align 4
 section .bss
 	align 16
 
-	global stack_bottom
-stack_bottom:
+	global stack_base
+stack_base:
 	resb 4000h 		; 16KB
 	global stack_top
 stack_top:
 
-	global heap_bottom
-heap_bottom:
+	global heap_base
+heap_base:
 	resb 8000h		; 32KB
 	global heap_top
 heap_top:

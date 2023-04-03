@@ -25,7 +25,8 @@ $(OBJ)/demo.o \
 $(OBJ)/permutations.o \
 $(OBJ)/core.o \
 $(OBJ)/decrypt.o \
-$(OBJ)/encrypt.o
+$(OBJ)/encrypt.o \
+$(OBJ)/memman.o
 
 .PHONY=all
 

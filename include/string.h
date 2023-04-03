@@ -18,5 +18,6 @@ char *double_to_string(double value);
 int isdigit(int c);
 int isspace(int c);
 void *memcpy(void *dest, const void *src, size_t n);
-
+void puthex(uint32_t n);
+void putint(uint32_t n);
 #endif

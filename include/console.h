@@ -9,5 +9,6 @@ void console_process_cmd_buffer();
 int hello(char **args, int n_args);
 int cmds(char **args, int n_args);
 int last_ret_code(char **args, int n_args);
+int mem_info(char **args, int n_args);
 
 #endif

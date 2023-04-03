@@ -3,6 +3,7 @@
 #include "console.h"
 #include "applications.h"
 #include "demo.h"
+#include "memman.h"
 
 #define MAX_CMD_BUFFER    32
 #define MAX_ARGS          16
@@ -22,6 +23,7 @@ static const console_cmd_tuple_t console_cmds[] = {
     {"hello", hello},
     {"cmds", cmds},
     {"ascon_demo", demo_ascon_aead},
+    {"meminfo", global_mem_info},
     {"??", last_ret_code}
 };
 
