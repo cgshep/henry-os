@@ -15,8 +15,7 @@ static void stack_push(calc_stack *c_stack, double value)
 	return;
     }
 
-    c_stack->top++;
-    c_stack->stack[c_stack->top] = value;
+    c_stack->stack[++c_stack->top] = value;
 }
 
 static double stack_pop(calc_stack *c_stack)
@@ -37,7 +36,7 @@ int calculator(char **args, int n_args)
     calc_stack c_stack;
     double a, b, res;
 
-    memset(&c_stack, 0, sizeof(double)*MAX_CALCULATOR_STACK_SIZE);
+    memset(&c_stack.stack, 0, sizeof(c_stack.stack));
     c_stack.top = -1;
 
     if (n_args < 3) {
@@ -54,30 +53,30 @@ int calculator(char **args, int n_args)
 	switch(*args[i]) {
 	case '+':
 	    if (i + 1 < n_args && isdigit(*args[i+1])) {
-		// +ve number of the form e.g. "+41394"
+		// Indicates a +ve number of the form e.g. "+41394"
 		stack_push(&c_stack, atof(args[i]));
 	    }
 	    else {
 		a = stack_pop(&c_stack);
 		b = stack_pop(&c_stack);
-		stack_push(&c_stack, a+b);
+		stack_push(&c_stack, a + b);
 	    }
 	    break;
 	case '-':
 	    if (i + 1 < n_args && isdigit(*args[i+1])) {
-		// -ve number, e.g. "-1902"
+		// Indicates a -ve number, e.g. "-1902"
 		stack_push(&c_stack, atof(args[i]));
 	    }
 	    else {
 		b = stack_pop(&c_stack);
 		a = stack_pop(&c_stack);
-		stack_push(&c_stack, a-b);
+		stack_push(&c_stack, a - b);
 	    }
 	    break;
 	case '*':
 	    a = stack_pop(&c_stack);
 	    b = stack_pop(&c_stack);
-	    stack_push(&c_stack, a*b);
+	    stack_push(&c_stack, a * b);
 	    break;
 	case '/':
 	    b = stack_pop(&c_stack);
@@ -87,7 +86,7 @@ int calculator(char **args, int n_args)
 		puts("Division by zero!");
 		return 1;
 	    }
-	    stack_push(&c_stack, a/b);
+	    stack_push(&c_stack, a / b);
 	    break;
 	}
     }
