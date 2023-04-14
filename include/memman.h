@@ -2,6 +2,7 @@
 #define MEMMAN_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 /*
  * Initialisation
@@ -16,7 +17,7 @@ int global_mem_info(char **args, int n_args);
 /*
  * Heap allocation functions
  */
-uint32_t kmalloc(uint32_t size);
+void *kmalloc(size_t size);
 void kfree(uint32_t addr);
 
 #endif // MEMMAN_H

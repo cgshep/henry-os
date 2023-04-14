@@ -18,7 +18,6 @@ stack_base:
 	resb 4000h 		; 16KB
 	global stack_top
 stack_top:
-
 	global heap_base
 heap_base:
 	resb 8000h		; 32KB

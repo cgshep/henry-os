@@ -10,6 +10,10 @@ CFLAGS:=$(CFLAGS) -std=gnu11 -ffreestanding -O0 -Wall -Wextra
 INCLUDE_DIRS:=include
 INC:=-I$(INCLUDE_DIRS)/
 
+ifdef DEBUG_MEMMAN
+CFLAGS += -DDEBUG_MEMMAN
+endif
+
 OBJS=$(OBJ)/tty.o \
 $(OBJ)/kernel.o \
 $(OBJ)/boot.o \

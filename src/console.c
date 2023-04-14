@@ -17,7 +17,6 @@ typedef struct {
     cmd_func_ptr_t func;
 } console_cmd_tuple_t;
 
-
 static const console_cmd_tuple_t console_cmds[] = {
     {"calc", calculator},
     {"hello", hello},
@@ -30,7 +29,7 @@ static const console_cmd_tuple_t console_cmds[] = {
 static char cmd_buffer[MAX_CMD_BUFFER];
 static size_t cmd_buffer_pos;
 static size_t n_cmds = sizeof(console_cmds) / sizeof(console_cmds[0]);
-static int console_ret_code=0;
+static int console_ret_code = 0;
 
 /*
  * Console commands

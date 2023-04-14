@@ -37,7 +37,7 @@ static void debug_test_software_interrupts()
 #endif
 
 static inline void loop() {
-    for (;;){}
+    while(1);
 }
 
 void kmain()
